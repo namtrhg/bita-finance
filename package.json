@@ -20,12 +20,15 @@
   },
   "homepage": "https://github.com/hshiferaw/nextjs-google-sheets-database#readme",
   "dependencies": {
-    "google-spreadsheet": "^3.3.0",
+    "google-auth-library": "^9.7.0",
+    "google-spreadsheet": "^4.1.1",
     "motion": "^10.14.2",
     "next": "^12.3.1",
     "react": "^17.0.2",
+    "react-data-table-component": "^7.6.2",
     "react-dom": "17.0.2",
-    "react-rough-notation": "^1.0.5"
+    "react-rough-notation": "^1.0.5",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.7",

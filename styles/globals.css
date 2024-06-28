@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @layer base {
   html,
   body {
-    @apply antialiased bg-neutral-900;
+    font-family: 'Inter', roboto;
   }
 }
