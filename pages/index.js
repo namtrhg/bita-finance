@@ -4,7 +4,6 @@ import DataTable, {
 	defaultThemes,
 } from "react-data-table-component";
 import Link from "next/link";
-import Image from "next/image";
 
 createTheme(
 	"custom",

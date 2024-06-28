@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 		const serviceAccountAuth = new JWT({
 			email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
 			key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, "\n"),
-			scopes: [process.env.GOOGLE_SHEET_SCOPE],
+			scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 		});
 
 		const doc = new GoogleSpreadsheet(
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 					totalAmount: row._rawData[5],
 					dishName: row._rawData[7],
 					sheetName: sheet.title,
-					sheetUrl: `${process.env.GOOGLE_SHEET_URL}/edit?gid=${sheet.sheetId}`,
+					sheetUrl: `https://docs.google.com/spreadsheets/d/1-7X5eNU2eIW24578lG2oMbVwMPNHUtVQ7WjlTMfBCl4/edit?gid=${sheet.sheetId}`,
 					date: sheet._headerValues[7],
 				}))
 				.slice(1);
