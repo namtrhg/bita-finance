@@ -255,7 +255,7 @@ const IndexPage = () => {
 			<div className="min-w-[90%]">
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 					<img
-						className="max-h-[320px] w-auto mx-auto mb-5"
+						className="max-h-[320px] w-auto mx-auto mb-5 flex justify-center items-center"
 						src="/images/banner.jpg"
 						alt="company-banner"
 					/>
