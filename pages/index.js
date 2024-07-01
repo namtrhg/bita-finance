@@ -5,9 +5,9 @@ import DataTable, {
 } from "react-data-table-component";
 import Link from "next/link";
 import { Bar } from "react-chartjs-2";
-import "chart.js/auto"; // This is important to import the chart module
+import "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import moment from "moment"; // Install moment for date manipulation
+import moment from "moment";
 import { formatNumber } from "../utils/formatNumber";
 
 createTheme(
@@ -254,6 +254,11 @@ const IndexPage = () => {
 		<div className="bg-gradient-to-r from-blue-500 to-purple-500 h-screen flex justify-center p-2 lg:p-10">
 			<div className="min-w-[90%]">
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+					<img
+						className="max-h-[320px] w-auto mx-auto mb-5"
+						src="/images/banner.jpg"
+						alt="company-banner"
+					/>
 					<div className="shadow-lg p-5 bg-white rounded-lg">
 						<h2 className="text-center font-bold text-lg mb-5">
 							Chi tiêu hàng tháng
@@ -264,16 +269,11 @@ const IndexPage = () => {
 							plugins={[ChartDataLabels]}
 						/>
 					</div>
-					<img
-						className="max-h-[320px] w-auto mx-auto mb-5"
-						src="/images/banner.jpg"
-						alt="company-banner"
-					/>
 				</div>
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
 					<div className="shadow-lg mb-5">
 						<DataTable
-							title="Chi tiêu hàng ngày"
+							title="SPENDING HISTORY"
 							columns={financeColumns}
 							data={financeData}
 							highlightOnHover
