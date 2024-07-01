@@ -4,6 +4,11 @@ import DataTable, {
 	defaultThemes,
 } from "react-data-table-component";
 import Link from "next/link";
+import { Bar } from "react-chartjs-2";
+import "chart.js/auto"; // This is important to import the chart module
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import moment from "moment"; // Install moment for date manipulation
+import { formatNumber } from "../utils/formatNumber";
 
 createTheme(
 	"custom",
@@ -69,10 +74,12 @@ const customStyles = {
 };
 
 const IndexPage = () => {
-	const [data, setData] = useState(null);
+	const [commonData, setCommonData] = useState(null);
+	const [financeData, setFinanceData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const columns = [
+
+	const commonColumns = [
 		{
 			name: <p className="font-bold uppercase">STT</p>,
 			cell: (row, index) => index + 1,
@@ -84,7 +91,7 @@ const IndexPage = () => {
 			sortable: true,
 		},
 		{
-			name: <p className="font-bold uppercase">Thành tiền/ ship</p>,
+			name: <p className="font-bold uppercase">Thành tiền</p>,
 			selector: (row) => <p>{row.totalAmount}</p>,
 			sortable: true,
 		},
@@ -94,7 +101,7 @@ const IndexPage = () => {
 			sortable: true,
 		},
 		{
-			name: <p className="font-bold uppercase">Tên sheet</p>,
+			name: <p className="font-bold uppercase">Sheet</p>,
 			selector: (row) => (
 				<Link href={row.sheetUrl} target="_blank">
 					<p className="text-[#964734] underline">{row.sheetName}</p>
@@ -109,25 +116,71 @@ const IndexPage = () => {
 		},
 	];
 
+	const financeColumns = [
+		{
+			name: <p className="font-bold uppercase">Ngày</p>,
+			selector: (row) => row.date,
+			sortable: true,
+		},
+		{
+			name: <p className="font-bold uppercase">Tổng tiền</p>,
+			selector: (row) => <p>{formatNumber(row.totalAmount)} đ</p>,
+			sortable: true,
+		},
+	];
+
 	useEffect(() => {
-		fetch("/api/common")
-			.then((response) => {
-				if (!response.ok) {
+		const fetchData = async () => {
+			try {
+				const [commonResponse, financeResponse] = await Promise.all([
+					fetch("/api/common"),
+					fetch("/api/sum"),
+				]);
+
+				if (!commonResponse.ok || !financeResponse.ok) {
 					throw new Error("Network response was not ok");
 				}
-				return response.json();
-			})
-			.then((data) => {
-				setData(data);
-				setLoading(false);
-			})
-			.catch((error) => {
+
+				const commonData = await commonResponse.json();
+				const financeData = await financeResponse.json();
+
+				const formattedFinanceData = Object.keys(financeData).map((key) => ({
+					date: key,
+					totalAmount: financeData[key],
+				}));
+
+				setCommonData(commonData);
+				setFinanceData(formattedFinanceData);
+			} catch (error) {
 				setError(error);
+			} finally {
 				setLoading(false);
-			});
+			}
+		};
+
+		fetchData();
 	}, []);
 
-	console.log(data);
+	const aggregateByMonth = (data) => {
+		const aggregatedData = {};
+
+		data.forEach((item) => {
+			const month = moment(item.date, "DD/MM/YYYY").format("MM/YYYY");
+			if (!aggregatedData[month]) {
+				aggregatedData[month] = 0;
+			}
+			aggregatedData[month] += item.totalAmount;
+		});
+
+		return Object.keys(aggregatedData).map((key) => ({
+			date: key,
+			totalAmount: aggregatedData[key],
+		}));
+	};
+
+	const aggregatedFinanceData = financeData
+		? aggregateByMonth(financeData)
+		: [];
 
 	if (loading) {
 		return (
@@ -136,6 +189,7 @@ const IndexPage = () => {
 			</div>
 		);
 	}
+
 	if (error) {
 		return (
 			<div className="bg-gradient-to-r from-blue-500 to-purple-500 h-screen flex items-center justify-center">
@@ -143,32 +197,108 @@ const IndexPage = () => {
 			</div>
 		);
 	}
+
+	const financeChartData = {
+		labels: aggregatedFinanceData.map((d) => d.date),
+		datasets: [
+			{
+				label: "Total Amount",
+				data: aggregatedFinanceData.map((d) => d.totalAmount),
+				backgroundColor: "rgba(15, 164, 175, 0.8)",
+				datalabels: {
+					anchor: "end",
+					align: "top",
+					formatter: function (value) {
+						return new Intl.NumberFormat("vi-VN", {
+							style: "currency",
+							currency: "VND",
+						}).format(value);
+					},
+				},
+			},
+		],
+	};
+
+	const options = {
+		plugins: {
+			datalabels: {
+				display: true,
+				color: "black",
+				anchor: "end",
+				align: "top",
+				offset: -5,
+				formatter: function (value) {
+					return new Intl.NumberFormat("vi-VN", {
+						style: "currency",
+						currency: "VND",
+					}).format(value);
+				},
+			},
+		},
+		scales: {
+			y: {
+				beginAtZero: true,
+				ticks: {
+					callback: function (value) {
+						return new Intl.NumberFormat("vi-VN", {
+							style: "currency",
+							currency: "VND",
+						}).format(value);
+					},
+				},
+			},
+		},
+	};
+
 	return (
-		<div className="bg-gradient-to-r from-blue-500 to-purple-500 h-screen flex justify-center p-10">
-			<div className="w-[90%]">
-				<img
-					className="max-h-[320px] w-auto mx-auto mb-5"
-					src="/images/banner.jpg"
-					alt="company-banner"
-				/>
-				<h1 className="uppercase text-white text-lg mb-5 text-center font-bold">
-					BITA VIỆT NAM
-					<br />
-					LEADERBOARD
-				</h1>
-				<div className="border-2 border-[#964734] border-solid shadow-lg">
-					<DataTable
-						columns={columns}
-						data={data}
-						highlightOnHover
-						pointerOnHover
-						pagination
-						customStyles={customStyles}
-						theme="custom"
+		<div className="bg-gradient-to-r from-blue-500 to-purple-500 h-screen flex justify-center p-2 lg:p-10">
+			<div className="min-w-[90%]">
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+					<div className="shadow-lg p-5 bg-white rounded-lg">
+						<h2 className="text-center font-bold text-lg mb-5">
+							Chi tiêu hàng tháng
+						</h2>
+						<Bar
+							data={financeChartData}
+							options={options}
+							plugins={[ChartDataLabels]}
+						/>
+					</div>
+					<img
+						className="max-h-[320px] w-auto mx-auto mb-5"
+						src="/images/banner.jpg"
+						alt="company-banner"
 					/>
+				</div>
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
+					<div className="shadow-lg mb-5">
+						<DataTable
+							title="Chi tiêu hàng ngày"
+							columns={financeColumns}
+							data={financeData}
+							highlightOnHover
+							pointerOnHover
+							pagination
+							customStyles={customStyles}
+							theme="custom"
+						/>
+					</div>
+					<div className="shadow-lg mb-5">
+						<DataTable
+							title="LEADERBOARD"
+							columns={commonColumns}
+							data={commonData}
+							highlightOnHover
+							pointerOnHover
+							pagination
+							customStyles={customStyles}
+							theme="custom"
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
 	);
 };
+
 export default IndexPage;
