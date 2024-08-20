@@ -73,6 +73,15 @@ const customStyles = {
 	},
 };
 
+const LoadingSpinner = () => {
+  return (
+    <div className="flex justify-center items-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-pink-500"></div>
+    </div>
+  );
+};
+
+
 const IndexPage = () => {
 	const [commonData, setCommonData] = useState(null);
 	const [financeData, setFinanceData] = useState(null);
@@ -185,7 +194,7 @@ const IndexPage = () => {
 	if (loading) {
 		return (
 			<div className="bg-gradient-to-r from-blue-500 to-purple-500 h-screen flex items-center justify-center">
-				<p className="text-[#f5f5f5]">Loading...</p>
+				<LoadingSpinner />
 			</div>
 		);
 	}
@@ -251,7 +260,7 @@ const IndexPage = () => {
 	};
 
 	return (
-		<div className="bg-gradient-to-r from-blue-500 to-purple-500 h-screen flex justify-center p-2 lg:p-10">
+		<div className="bg-gradient-to-r from-blue-500 to-purple-500 min-h-screen flex justify-center p-2 lg:p-10">
 			<div className="min-w-[90%]">
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 					<img
@@ -261,7 +270,7 @@ const IndexPage = () => {
 					/>
 					<div className="shadow-lg p-5 bg-white rounded-lg">
 						<h2 className="text-center font-bold text-lg mb-5">
-							Chi tiêu hàng tháng
+							HOW MUCH BITA SPENT EACH MONTH FOR LUNCH
 						</h2>
 						<Bar
 							data={financeChartData}
