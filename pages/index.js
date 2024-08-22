@@ -74,13 +74,12 @@ const customStyles = {
 };
 
 const LoadingSpinner = () => {
-  return (
-    <div className="flex justify-center items-center">
-      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-pink-500"></div>
-    </div>
-  );
+	return (
+		<div className="flex justify-center items-center">
+			<div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-pink-500"></div>
+		</div>
+	);
 };
-
 
 const IndexPage = () => {
 	const [commonData, setCommonData] = useState(null);
@@ -261,14 +260,9 @@ const IndexPage = () => {
 
 	return (
 		<div className="bg-gradient-to-r from-blue-500 to-purple-500 min-h-screen flex justify-center p-2 lg:p-10">
-			<div className="min-w-[90%]">
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-					<img
-						className="max-h-[320px] w-auto mx-auto mb-5 flex justify-center items-center"
-						src="/images/banner.jpg"
-						alt="company-banner"
-					/>
-					<div className="shadow-lg p-5 bg-white rounded-lg">
+			<div className="min-w-[90%] grid grid-cols-1 lg:grid-cols-2 gap-4">
+				<div className="space-y-4">
+					<div className="p-5 bg-white">
 						<h2 className="text-center font-bold text-lg mb-5">
 							HOW MUCH BITA SPENT EACH MONTH FOR LUNCH
 						</h2>
@@ -278,9 +272,7 @@ const IndexPage = () => {
 							plugins={[ChartDataLabels]}
 						/>
 					</div>
-				</div>
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
-					<div className="shadow-lg mb-5">
+					<div className="mb-5">
 						<DataTable
 							title="SPENDING HISTORY"
 							columns={financeColumns}
@@ -292,18 +284,18 @@ const IndexPage = () => {
 							theme="custom"
 						/>
 					</div>
-					<div className="shadow-lg mb-5">
-						<DataTable
-							title="LEADERBOARD"
-							columns={commonColumns}
-							data={commonData}
-							highlightOnHover
-							pointerOnHover
-							pagination
-							customStyles={customStyles}
-							theme="custom"
-						/>
-					</div>
+				</div>
+				<div className="mb-5">
+					<DataTable
+						title="LEADERBOARD"
+						columns={commonColumns}
+						data={commonData}
+						highlightOnHover
+						pointerOnHover
+						pagination
+						customStyles={customStyles}
+						theme="custom"
+					/>
 				</div>
 			</div>
 		</div>
