@@ -75,9 +75,12 @@ const customStyles = {
 
 const LoadingSpinner = () => {
 	return (
-		<div className="flex justify-center items-center">
-			<div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-pink-500"></div>
-		</div>
+		<img
+			src="/images/racoon-pedro.gif"
+			alt="Loading Spinner"
+			className="w-20 h-20"
+		/>
+		
 	);
 };
 
@@ -192,7 +195,7 @@ const IndexPage = () => {
 
 	if (loading) {
 		return (
-			<div className="bg-gradient-to-r from-blue-500 to-purple-500 h-screen flex items-center justify-center">
+			<div className="bg-black h-screen flex items-center justify-center">
 				<LoadingSpinner />
 			</div>
 		);
