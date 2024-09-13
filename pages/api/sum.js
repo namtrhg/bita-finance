@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 		const sheets = doc.sheetsByIndex;
 		const groupedSums = {};
 
-		for (let i = 1; i < sheets.length; i++) {
+		for (let i = 3; i < sheets.length; i++) {
 			const sheet = sheets[i];
 			await sheet.loadCells("F23:H1");
 
