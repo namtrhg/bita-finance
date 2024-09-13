@@ -1,15 +1,6 @@
 import { useState, useEffect } from "react";
-import DataTable, {
-	createTheme,
-	defaultThemes,
-} from "react-data-table-component";
+import DataTable, { createTheme, defaultThemes } from "react-data-table-component";
 import Link from "next/link";
-import { Bar } from "react-chartjs-2";
-import "chart.js/auto";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-import moment from "moment";
-import { formatNumber } from "../utils/formatNumber";
-import { Analytics } from "@vercel/analytics/react"
 
 createTheme(
 	"custom",
@@ -81,13 +72,11 @@ const LoadingSpinner = () => {
 			alt="Loading Spinner"
 			className="w-20 h-20"
 		/>
-		
 	);
 };
 
 const IndexPage = () => {
 	const [commonData, setCommonData] = useState(null);
-	const [financeData, setFinanceData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
@@ -128,41 +117,17 @@ const IndexPage = () => {
 		},
 	];
 
-	const financeColumns = [
-		{
-			name: <p className="font-bold uppercase">Ngày</p>,
-			selector: (row) => row.date,
-			sortable: true,
-		},
-		{
-			name: <p className="font-bold uppercase">Tổng tiền</p>,
-			selector: (row) => <p>{formatNumber(row.totalAmount)} đ</p>,
-			sortable: true,
-		},
-	];
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const [commonResponse, financeResponse] = await Promise.all([
-					fetch("/api/common"),
-					fetch("/api/sum"),
-				]);
+				const commonResponse = await fetch("/api/common");
 
-				if (!commonResponse.ok || !financeResponse.ok) {
+				if (!commonResponse.ok) {
 					throw new Error("Network response was not ok");
 				}
 
 				const commonData = await commonResponse.json();
-				const financeData = await financeResponse.json();
-
-				const formattedFinanceData = Object.keys(financeData).map((key) => ({
-					date: key,
-					totalAmount: financeData[key],
-				}));
-
 				setCommonData(commonData);
-				setFinanceData(formattedFinanceData);
 			} catch (error) {
 				setError(error);
 			} finally {
@@ -172,27 +137,6 @@ const IndexPage = () => {
 
 		fetchData();
 	}, []);
-
-	const aggregateByMonth = (data) => {
-		const aggregatedData = {};
-
-		data.forEach((item) => {
-			const month = moment(item.date, "DD/MM/YYYY").format("MM/YYYY");
-			if (!aggregatedData[month]) {
-				aggregatedData[month] = 0;
-			}
-			aggregatedData[month] += item.totalAmount;
-		});
-
-		return Object.keys(aggregatedData).map((key) => ({
-			date: key,
-			totalAmount: aggregatedData[key],
-		}));
-	};
-
-	const aggregatedFinanceData = financeData
-		? aggregateByMonth(financeData)
-		: [];
 
 	if (loading) {
 		return (
@@ -210,87 +154,10 @@ const IndexPage = () => {
 		);
 	}
 
-	const financeChartData = {
-		labels: aggregatedFinanceData.map((d) => d.date),
-		datasets: [
-			{
-				label: "Total Amount",
-				data: aggregatedFinanceData.map((d) => d.totalAmount),
-				backgroundColor: "rgba(15, 164, 175, 0.8)",
-				datalabels: {
-					anchor: "end",
-					align: "top",
-					formatter: function (value) {
-						return new Intl.NumberFormat("vi-VN", {
-							style: "currency",
-							currency: "VND",
-						}).format(value);
-					},
-				},
-			},
-		],
-	};
-
-	const options = {
-		plugins: {
-			datalabels: {
-				display: true,
-				color: "black",
-				anchor: "end",
-				align: "top",
-				offset: -5,
-				formatter: function (value) {
-					return new Intl.NumberFormat("vi-VN", {
-						style: "currency",
-						currency: "VND",
-					}).format(value);
-				},
-			},
-		},
-		scales: {
-			y: {
-				beginAtZero: true,
-				ticks: {
-					callback: function (value) {
-						return new Intl.NumberFormat("vi-VN", {
-							style: "currency",
-							currency: "VND",
-						}).format(value);
-					},
-				},
-			},
-		},
-	};
-
 	return (
-		<>
 		<div className="bg-gradient-to-r from-blue-500 to-purple-500 min-h-screen flex justify-center p-2 lg:p-10">
-			<div className="min-w-[90%] grid grid-cols-1 lg:grid-cols-2 gap-4">
-				<div className="space-y-4">
-					<div className="p-5 bg-white">
-						<h2 className="text-center font-bold text-lg mb-5">
-							HOW MUCH BITA SPENT EACH MONTH FOR LUNCH
-						</h2>
-						<Bar
-							data={financeChartData}
-							options={options}
-							plugins={[ChartDataLabels]}
-						/>
-					</div>
-					<div className="mb-5">
-						<DataTable
-							title="SPENDING HISTORY"
-							columns={financeColumns}
-							data={financeData}
-							highlightOnHover
-							pointerOnHover
-							pagination
-							customStyles={customStyles}
-							theme="custom"
-						/>
-					</div>
-				</div>
-				<div className="mb-5">
+			<div className="mx-auto">
+					<img className="max-h-64 mb-6 mx-auto" src="images/banner.jpg" alt="banner"/>
 					<DataTable
 						title="LEADERBOARD"
 						columns={commonColumns}
@@ -301,11 +168,8 @@ const IndexPage = () => {
 						customStyles={customStyles}
 						theme="custom"
 					/>
-				</div>
 			</div>
 		</div>
-		<Analytics />
-		</>
 	);
 };
 
