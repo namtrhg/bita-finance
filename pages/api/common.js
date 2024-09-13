@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 
 		const allData = [];
 
-		for (let i = 2; i < sheets.length; i++) {
+		for (let i = 3; i < sheets.length; i++) {
 			const sheet = sheets[i];
 			await sheet.loadCells();
 

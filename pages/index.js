@@ -9,6 +9,7 @@ import "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import moment from "moment";
 import { formatNumber } from "../utils/formatNumber";
+import { Analytics } from "@vercel/analytics/react"
 
 createTheme(
 	"custom",
@@ -262,6 +263,7 @@ const IndexPage = () => {
 	};
 
 	return (
+		<>
 		<div className="bg-gradient-to-r from-blue-500 to-purple-500 min-h-screen flex justify-center p-2 lg:p-10">
 			<div className="min-w-[90%] grid grid-cols-1 lg:grid-cols-2 gap-4">
 				<div className="space-y-4">
@@ -302,6 +304,8 @@ const IndexPage = () => {
 				</div>
 			</div>
 		</div>
+		<Analytics />
+		</>
 	);
 };
 
