@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/common.js": {
+    "pages/api/common.js": {
       "maxDuration": 30
     }
   }
