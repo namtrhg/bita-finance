@@ -40,7 +40,7 @@ export default async function handler(req, res) {
 				sheetName: sheet.title,
 				sheetUrl: `https://docs.google.com/spreadsheets/d/${process.env.GOOGLE_SHEET_ID}/edit?gid=${sheet.sheetId}`,
 				date: sheet.headerValues[7], // Assuming date is in header row
-			}));
+			})).filter((data) => data.name);
 
 			allData.push(...filteredData);
 		}
