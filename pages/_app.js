@@ -1,6 +1,7 @@
 import Head from "next/head";
 import "../styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const App = ({ Component, pageProps }) => {
 	return (
@@ -16,6 +17,7 @@ const App = ({ Component, pageProps }) => {
 					<Component {...pageProps} />
 				</main>
 				<Analytics />
+				<SpeedInsights/>
 			</body>
 		</>
 	);
