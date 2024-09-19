@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Analytics } from "@vercel/analytics/react"
 import DataTable, { createTheme, defaultThemes } from "react-data-table-component";
 import Link from "next/link";
 
@@ -170,7 +169,6 @@ const IndexPage = () => {
 						theme="custom"
 					/>
 			</div>
-			<Analytics/>
 		</div>
 	);
 };
