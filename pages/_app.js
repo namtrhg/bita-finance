@@ -12,13 +12,11 @@ const App = ({ Component, pageProps }) => {
 				<meta name="description" content="BitA Excel Bill" />
 				<title>BITA BILL</title>
 			</Head>
-			<body>
 				<main className="">
 					<Component {...pageProps} />
 				</main>
 				<Analytics />
 				<SpeedInsights/>
-			</body>
 		</>
 	);
 };
