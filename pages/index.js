@@ -127,7 +127,7 @@ const IndexPage = () => {
 				}
 
 				const commonData = await commonResponse.json();
-				setCommonData(commonData);
+				setCommonData(commonData.filter((data) => data.name && data.value !== "TRUE"));
 			} catch (error) {
 				setError(error);
 			} finally {
