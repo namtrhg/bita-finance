@@ -28,11 +28,9 @@ export default async function handler(req, res) {
 			// Fetch rows efficiently by filtering directly in the API call
 			const rows = await sheet.getRows({
 				offset: 1, // Skip header row
-				limit: sheet.rowCount, // Fetch all rows
-				query: 'colG != "TRUE"', // Filter rows where column G is not "TRUE"
 			});
 
-			const filteredData = rows.map((row) => ({
+			const filteredData = rows.filter((row) => row._rawData[1] && row._rawData[6] !== "TRUE").map((row) => ({
 				index: row._rawData[0],
 				name: row._rawData[1],
 				totalAmount: row._rawData[5],
