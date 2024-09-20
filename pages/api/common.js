@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 				sheetName: sheet.title,
 				sheetUrl: `https://docs.google.com/spreadsheets/d/${process.env.GOOGLE_SHEET_ID}/edit?gid=${sheet.sheetId}`,
 				date: sheet.headerValues[7], // Assuming date is in header row
-			})).filter((data) => data.name && row._rawData[6] !== "TRUE");
+			})).filter((data) => data.name && data._rawData[6] !== "TRUE");
 
 			allData.push(...filteredData);
 		}
