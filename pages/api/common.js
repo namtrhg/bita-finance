@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 				offset: 1, // Skip header row
 			});
 
-			const filteredData = rows.filter((row) => row._rawData[1] && row._rawData[6] !== "TRUE").map((row) => ({
+			const filteredData = rows.map((row) => ({
 				index: row._rawData[0],
 				name: row._rawData[1],
 				totalAmount: row._rawData[5],
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 				sheetName: sheet.title,
 				sheetUrl: `https://docs.google.com/spreadsheets/d/${process.env.GOOGLE_SHEET_ID}/edit?gid=${sheet.sheetId}`,
 				date: sheet.headerValues[7], // Assuming date is in header row
-			})).filter((data) => data.name);
+			})).filter((data) => data.name && row._rawData[6] !== "TRUE");
 
 			allData.push(...filteredData);
 		}
