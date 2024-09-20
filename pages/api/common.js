@@ -37,7 +37,7 @@ export default async function handler(req, res) {
 				dishName: row._rawData[7],
 				sheetName: sheet.title,
 				value: row._rawData[6],
-				sheetUrl: `https://docs.google.com/spreadsheets/d/${process.env.GOOGLE_SHEET_ID}/edit?gid=${sheet.sheetId}`,
+				sheetUrl: `${sheet._spreadsheet._spreadsheetUrl}?gid=${sheet.sheetId}`,
 				date: sheet.headerValues[7], // Assuming date is in header row
 			}));
 
