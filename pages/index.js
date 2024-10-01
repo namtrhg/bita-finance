@@ -65,16 +65,6 @@ const customStyles = {
 	},
 };
 
-const LoadingSpinner = () => {
-	return (
-		<img
-			src="/images/racoon-pedro.gif"
-			alt="Loading Spinner"
-			className="w-20 h-20"
-		/>
-	);
-};
-
 const IndexPage = () => {
 	const [commonData, setCommonData] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -141,7 +131,7 @@ const IndexPage = () => {
 	if (loading) {
 		return (
 			<div className="bg-black h-screen flex items-center justify-center">
-				<LoadingSpinner />
+				<p className="text-[#f5f5f5]">Loading...</p>
 			</div>
 		);
 	}
