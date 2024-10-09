@@ -131,7 +131,7 @@ const IndexPage = () => {
 	if (loading) {
 		return (
 			<div className="bg-black h-screen flex items-center justify-center">
-				<p className="text-[#f5f5f5]">Loading...</p>
+				<p className="text-[#f5f5f5]">Loadyng...</p>
 			</div>
 		);
 	}
