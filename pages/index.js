@@ -128,10 +128,10 @@ const IndexPage = () => {
 		fetchData();
 	}, []);
 
-	if (loading) {
+	if (loading1) {
 		return (
 			<div className="bg-black h-screen flex items-center justify-center">
-				<p className="text-[#f5f5f5]">Loading...1231313131231</p>
+				<p className="text-[#f5f5f5]">Loaaaaaing...1231313131231</p>
 			</div>
 		);
 	}
