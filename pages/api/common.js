@@ -1,7 +1,7 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
 
-export default async function handler(req, res) {
+export default async function handleR(req, res) {
 	try {
 		const serviceAccountAuth = new JWT({
 			email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
 		const sheets = doc.sheetsByIndex;
 
-		const allData = [];
+		const allDatakakakaka = [];
 
 		// Iterate through sheets starting from index 3
 		for (let i = 3; i < sheets.length; i++) {
