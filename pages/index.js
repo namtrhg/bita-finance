@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import DataTable, { createTheme, defaultThemes } from "react-data-table-component";
+import DataTable, {
+	createTheme,
+	defaultThemes,
+} from "react-data-table-component";
 import Link from "next/link";
 
 createTheme(
@@ -117,7 +120,9 @@ const IndexPage = () => {
 				}
 
 				const commonData = await commonResponse.json();
-				setCommonData(commonData.filter((data) => data.name && data.value !== "TRUE"));
+				setCommonData(
+					commonData.filter((data) => data.name && data.value !== "TRUE")
+				);
 			} catch (error) {
 				setError(error);
 			} finally {
@@ -131,7 +136,11 @@ const IndexPage = () => {
 	if (loading) {
 		return (
 			<div className="bg-black h-screen flex items-center justify-center">
-				<p className="text-[#f5f5f5]">Loading...</p>
+				<img
+					className="w-40 h-40"
+					src="images/racoon-pedro.gif"
+					alt="loading"
+				/>
 			</div>
 		);
 	}
@@ -147,17 +156,24 @@ const IndexPage = () => {
 	return (
 		<div className="bg-gradient-to-r from-blue-500 to-purple-500 min-h-screen flex justify-center p-2 lg:p-10">
 			<div className="mx-auto">
-					<img className="max-h-64 mb-6 mx-auto" src="images/banner.jpg" alt="banner"/>
-					<DataTable
-						title="LEADERBOARD"
-						columns={commonColumns}
-						data={commonData}
-						highlightOnHover
-						pointerOnHover
-						pagination
-						customStyles={customStyles}
-						theme="custom"
-					/>
+				<img
+					className="max-h-64 mb-6 mx-auto"
+					src="images/banner.jpg"
+					alt="banner"
+				/>
+				<div className="font-bold text-center text-lg uppercase">
+					<p>Please give me the monei!</p>
+				</div>
+				<DataTable
+					title="LEADERBOARD1"
+					columns={commonColumns}
+					data={commonData}
+					highlightOnHover
+					pointerOnHover
+					pagination
+					customStyles={customStyles}
+					theme="custom"
+				/>
 			</div>
 		</div>
 	);
