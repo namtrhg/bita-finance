@@ -131,7 +131,7 @@ const IndexPage = () => {
 	if (loading) {
 		return (
 			<div className="bg-black h-screen flex items-center justify-center">
-				<p className="text-[#f5f5f5]">Loading...</p>
+				<img className="w-12 h-12" src="images/loading.gif" alt="loadin" />
 			</div>
 		);
 	}
@@ -149,7 +149,7 @@ const IndexPage = () => {
 			<div className="mx-auto">
 					<img className="max-h-64 mb-6 mx-auto" src="images/banner.jpg" alt="banner"/>
 					<DataTable
-						title="LEADERBOARD"
+						title="LEADER BOARDS"
 						columns={commonColumns}
 						data={commonData}
 						highlightOnHover
