@@ -65,6 +65,7 @@ const customStyles = {
 	},
 };
 
+// Index page
 const IndexPage = () => {
 	const [commonData, setCommonData] = useState(null);
 	const [loading, setLoading] = useState(true);
